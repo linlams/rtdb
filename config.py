@@ -11,18 +11,18 @@ def _custom_fields():
     from pyrocore.util import fmt
 
     yield engine.DynamicField(int,"uploaded_last_day","bytes uploaded in the last day",
-        matcher=matching.ByteSizeFilter, accessor=lambda o: get_custom_uploaded_last_day(o,'day'))
+        matcher=matching.ByteSizeFilter, accessor=lambda o: get_custom_uploaded_last(o,'day'))
     
     yield engine.DynamicField(int,"uploaded_last_week","bytes uploaded in the last week",
-        matcher=matching.ByteSizeFilter, accessor=lambda o: get_custom_uploaded_last_day(o,'week'))
+        matcher=matching.ByteSizeFilter, accessor=lambda o: get_custom_uploaded_last(o,'week'))
 
     yield engine.DynamicField(int,"uploaded_last_month","bytes uploaded in the last month",
-        matcher=matching.ByteSizeFilter, accessor=lambda o: get_custom_uploaded_last_day(o,'month'))
+        matcher=matching.ByteSizeFilter, accessor=lambda o: get_custom_uploaded_last(o,'month'))
 
     
     # PUT CUSTOM FIELD CODE HERE
 
-def get_custom_uploaded_last_day(obj,timelength):
+def _get_custom_uploaded_last(obj,timelength):
     "Get an aggregated custom upload value field"
     try:
         result = int(obj._engine._rpc.d.get_custom(obj._fields["hash"],'uploaded_last_'+timelength))
