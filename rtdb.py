@@ -151,9 +151,12 @@ def updateRT():
 		update_values.append([r[0].encode('ascii','replace'),'uploaded_last_week',str(r[2])])
 		update_values.append([r[0].encode('ascii','replace'),'uploaded_last_month',str(r[3])])
 		for u in update_values:
-			result = proxy.d.set_custom(*u)
-			if result != 0:
-				print 'something happened on '+u
+			try:
+				result = proxy.d.set_custom(*u)
+				if result != 0:
+					print 'something happened on '+u
+			except Fault as e:
+				print e
 
 def printDB():
 	conn = sqlite3.connect(os.path.expanduser('~/.config/rtdb.db'))
